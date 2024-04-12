@@ -27,11 +27,11 @@ app.post('/finance', (req, res) => {
 
   // Create a new finance record from the request body
   const newExpense = {
-    title: req.body.placeOfExpense, // Adjust these properties based on how your data is structured
-    category: req.body.categories.join(", "), // Assuming categories is an array
-    amount: "$" + req.body.amount, // Assuming you want to store amounts as strings prefixed with '$'
-    type: req.body.modeOfPayment, // Directly use the payment mode
-    date: req.body.expenseDate // Use the date from the form
+    title: req.body.placeOfExpense, 
+    category: req.body.categories.join(", "), 
+    amount: "$" + req.body.amount, 
+    type: req.body.modeOfPayment, 
+    date: req.body.expenseDate 
   };
 
   // Add the new expense to the simulated data array

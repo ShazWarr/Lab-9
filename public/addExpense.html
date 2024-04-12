@@ -225,7 +225,7 @@
           },
           body: JSON.stringify(formData),
         })
-          .then((response) => response.json()) // assuming the server responds with JSON
+          .then((response) => response.json()) 
           .then((data) => alert("Form submitted successfully: " + data.message))
           .catch((error) => console.error("Error:", error));
       }
