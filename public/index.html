@@ -40,59 +40,52 @@
           "Last Updated: " + currentTime;
       }
       function fetchFinanceData() {
-        //Calls updateFinanceTable and updateCurrentTime
-        //USED TO HAVE SIMULATED DATA HERE
+    // Calls updateFinanceTable and updateCurrentTime
 
-        //fetch operation here
-        fetch("/finance")
-          .then((response) => {
-            //if the response is not valid
+    // REMEMBER SHAZ to replace this URL below with your hosted-URL
+    fetch("http://localhost:3000/finance")
+        .then((response) => {
+            // if the response is not valid
             if (!response.ok) {
-              throw new Error("Network response failed");
+                throw new Error("Network response failed");
             }
-            //else return the json response
+            // else return the json response
             return response.json();
-          })
-          //pass the returned response to the "updateFinanceTable"
-          .then((data) => {
+        })
+        // pass the returned response to the "updateFinanceTable"
+        .then((data) => {
             // Update the finance table with the received data
             updateFinanceTable(data);
             updateCurrentTime();
-          })
-          .catch((error) => {
-            console.error(
-              "Error occured with fetch",
-              error
-            );
-          });
-
-        updateFinanceTable(simulatedData);
-        updateCurrentTime();
-      }
-
-      
-      function updateFinanceTable(data) {
-        const financeDataElement = document.getElementById("financeData");
-        financeDataElement.innerHTML = ""; // Clear existing data
-        data.forEach((item) => {
-          // Create a new table row element with table data
-          const newRow = document.createElement("tr");
-
-          // Populate the table
-          newRow.innerHTML = `
-        <td>${item.title}</td>
-        <td>${item.category}</td>
-        <td>${item.amount}</td>
-        <td>${item.type}</td>
-        <td>${item.date}</td>
-      `;
-
-          // Append the new row to the table body
-          financeDataElement.appendChild(newRow);
+        })
+        .catch((error) => {
+            console.error("Error occurred with fetch", error);
         });
-      }
-      // Run it
-      setInterval(fetchFinanceData, 5000);
+}
+
+function updateFinanceTable(data) {
+    const financeDataElement = document.getElementById("financeData");
+    financeDataElement.innerHTML = ""; // Clear existing data
+    data.forEach((item) => {
+        // Create a new table row element with table data
+        const newRow = document.createElement("tr");
+
+        // Populate the table
+        newRow.innerHTML = `
+            <td>${item.title}</td>
+            <td>${item.category}</td>
+            <td>${item.amount}</td>
+            <td>${item.type}</td>
+            <td>${item.date}</td>
+        `;
+
+        // Append the new row to the table body
+        financeDataElement.appendChild(newRow);
+    });
+}
+
+// Run it
+setInterval(fetchFinanceData, 5000);
     </script>
     <!--End of Script-->
   </body>

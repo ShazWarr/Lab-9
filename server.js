@@ -1,14 +1,44 @@
-//import express
+// Import express
 const express = require('express');
-//express instance
+const cors = require('cors');
+
+// Create an express instance
 const app = express();
 // Serve static files from the 'public' directory
-app.use('/public', express.static('public'))
+app.use('/public', express.static('public'));
+app.use(cors({
+  methods: ['GET', 'POST'], // Allow only certain methods
+
+}));
+
+
+// Middleware to parse JSON and URL-encoded data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // GET endpoint/handler for "/finance"
-app.get('/finance', (req, res) =>{
-res.json(simulatedData);
+app.get('/finance', (req, res) => {
+  res.json(simulatedData);
+});
 
+// POST endpoint to receive expenses data
+app.post('/finance', (req, res) => {
+  console.log(req.body); // Continue logging the data to the console for debugging
+
+  // Create a new finance record from the request body
+  const newExpense = {
+    title: req.body.placeOfExpense, // Adjust these properties based on how your data is structured
+    category: req.body.categories.join(", "), // Assuming categories is an array
+    amount: "$" + req.body.amount, // Assuming you want to store amounts as strings prefixed with '$'
+    type: req.body.modeOfPayment, // Directly use the payment mode
+    date: req.body.expenseDate // Use the date from the form
+  };
+
+  // Add the new expense to the simulated data array
+  simulatedData.push(newExpense);
+
+  // Send a response back to the client
+  res.status(201).json({ message: "Expense added successfully!" });
 });
 
 
@@ -37,6 +67,9 @@ const simulatedData = [
     },
   ];
 
+
+
+  
 
 
 //Start
