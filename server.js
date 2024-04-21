@@ -11,6 +11,13 @@ app.use(cors({
 
 }));
 
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database("C:\\Users\\Shaz\\Documents\\lab9DB.db", (err) => {
+    if (err) {
+        return console.error(err.message);
+    }
+    console.log('Connected to the SQlite database.');
+});
 
 // Middleware to parse JSON and URL-encoded data
 app.use(express.json());
@@ -18,58 +25,32 @@ app.use(express.urlencoded({ extended: true }));
 
 // GET endpoint/handler for "/finance"
 app.get('/finance', (req, res) => {
-  res.json(simulatedData);
+  db.all("SELECT * FROM finance", [], (err, rows) => {
+    if (err) {
+        res.status(500).send('Failed to retrieve data from the database.');
+        console.error(err.message);
+    } else {
+        res.json(rows);
+    }
+});
 });
 
-// POST endpoint to receive expenses data
+//POST endpoint/Hanlder for "/finance"
 app.post('/finance', (req, res) => {
-  console.log(req.body); // Continue logging the data to the console for debugging
-
-  // Create a new finance record from the request body
-  const newExpense = {
-    title: req.body.placeOfExpense, 
-    category: req.body.categories.join(", "), 
-    amount: "$" + req.body.amount, 
-    type: req.body.modeOfPayment, 
-    date: req.body.expenseDate 
-  };
-
-  // Add the new expense to the simulated data array
-  simulatedData.push(newExpense);
-
-  // Send a response back to the client
-  res.status(201).json({ message: "Expense added successfully!" });
+  const { title, category, amount, type, date } = req.body;
+  db.run(`INSERT INTO finance (title, category, amount, type, date) VALUES (?, ?, ?, ?, ?)`, [title, category, amount, type, date], (err) => {
+      if (err) {
+          res.status(500).send('Failed to add new record.');
+          console.error(err.message);
+      } else {
+          res.status(201).json({ message: "Expense added successfully!" });
+      }
+  });
 });
 
 
-//Simulated Data from Index.html
-const simulatedData = [
-    {
-      title: "March Grocery",
-      category: "Groceries",
-      amount: "$200",
-      type: "Debit",
-      date: "2024-04-01",
-    },
-    {
-      title: "Utility Bill",
-      category: "Utilities",
-      amount: "$150",
-      type: "Debit",
-      date: "2024-04-02",
-    },
-    {
-      title: "Movie Night",
-      category: "Entertainment",
-      amount: "$100",
-      type: "Debit",
-      date: "2024-04-03",
-    },
-  ];
 
 
-
-  
 
 
 //Start

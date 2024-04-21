@@ -210,22 +210,23 @@
           placeOfExpense: document.getElementById("placeOfExpense").value,
           expenseDate: document.getElementById("expenseDate").value,
           amount: parseFloat(document.getElementById("amount").value),
-          categories: Array.from(
+          category: Array.from(
             document.querySelectorAll('input[name="category[]"]:checked')
-          ).map((el) => el.value),
+          )
+            .map((el) => el.value)
+            .join(", "),
           modeOfPayment: document.getElementById("modeOfPayment").value,
           rational: document.getElementById("rational").value,
         };
 
         fetch("http://localhost:3000/finance", {
-         
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
         })
-          .then((response) => response.json()) 
+          .then((response) => response.json())
           .then((data) => alert("Form submitted successfully: " + data.message))
           .catch((error) => console.error("Error:", error));
       }
