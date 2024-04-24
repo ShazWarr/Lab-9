@@ -12,7 +12,7 @@ app.use(cors({
 }));
 
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database("C:\\Users\\Shaz\\Documents\\lab9DB.db", (err) => {
+const db = new sqlite3.Database("data/lab9DB.db", (err) => {
     if (err) {
         return console.error(err.message);
     }
@@ -54,7 +54,7 @@ app.post('/finance', (req, res) => {
 
 
 //Start
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;  // Set default port to 3000
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

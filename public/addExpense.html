@@ -18,34 +18,34 @@
     <main class="container">
       <h1>Add Expenses</h1>
       <form id="financeForm" action="" method="post">
-        <!--PLACE OF EXPENSE-->
-        <label for="placeOfExpense" class="form-label">Place of Expense *</label
+        <!--title-->
+        <label for="title" class="form-label">Place of Expense *</label
         ><br />
         <input
           type="text"
           class="form-control form-control-lg"
-          id="placeOfExpense"
-          name="placeOfExpense"
+          id="title"
+          name="title"
           placeholder="Must enter at least 5 characters"
           aria-label=".form-control-lg example"
           required
           minlength="5"
         />
-        <span class="error" id="placeOfExpenseError"></span><br /><br />
+        <span class="error" id="titleError"></span><br /><br />
 
         <!--DATE OF EXPENSE-->
-        <label for="expenseDate" class="form-label">Date Of Expense *</label
+        <label for="date" class="form-label">Date Of Expense *</label
         ><br />
         <input
           type="date"
           class="form-control form-control-lg"
-          id="expenseDate"
-          name="expenseDate"
+          id="date"
+          name="date"
           aria-label=".form-control-lg example"
           required
           max="<?php echo date('Y-m-d'); ?>"
         />
-        <span class="error" id="expenseDateError"></span><br /><br />
+        <span class="error" id="dateError"></span><br /><br />
 
         <!--Amount-->
         <label for="amount" class="form-label">Amount *</label><br />
@@ -90,14 +90,14 @@
         <label for="fun"> Fun</label><br />
         <span class="error" id="categoryError"></span><br /><br />
 
-        <!--Mode of Payment-->
-        <label for="modeOfPayment" class="form-label">Mode of Payment *</label
+        <!--Type-->
+        <label for="type" class="form-label">Mode of Payment *</label
         ><br />
         <select
           class="form-select form-select-lg mb-3"
           aria-label="Large select example"
-          id="modeOfPayment"
-          name="modeOfPayment"
+          id="type"
+          name="type"
           required
         >
           <option selected disabled value="">Choose</option>
@@ -105,7 +105,7 @@
           <option value="debitCard">Debit Card</option>
           <option value="cash">Cash</option>
         </select>
-        <span class="error" id="modeOfPaymentError"></span><br /><br />
+        <span class="error" id="typeError"></span><br /><br />
 
         <!--Rational-->
         <label for="rational" class="form-label"
@@ -140,44 +140,44 @@
         let isValid = true;
 
         // Get input values
-        const placeOfExpense = document.getElementById("placeOfExpense").value;
-        const expenseDate = document.getElementById("expenseDate").value;
+        const title = document.getElementById("title").value;
+        const date = document.getElementById("date").value;
         const amount = parseFloat(document.getElementById("amount").value);
         const categories = document.querySelectorAll(
           'input[name="category[]"]:checked'
         );
-        const modeOfPayment = document.getElementById("modeOfPayment").value;
+        const type = document.getElementById("type").value;
         const rational = document.getElementById("rational").value;
 
         // Get error elements
-        const placeOfExpenseError = document.getElementById(
-          "placeOfExpenseError"
+        const titleError = document.getElementById(
+          "titleError"
         );
-        const expenseDateError = document.getElementById("expenseDateError");
+        const dateError = document.getElementById("dateError");
         const amountError = document.getElementById("amountError");
         const categoryError = document.getElementById("categoryError");
-        const modeOfPaymentError =
-          document.getElementById("modeOfPaymentError");
+        const typeError =
+          document.getElementById("typeError");
 
         // Reset error messages
-        placeOfExpenseError.textContent = "";
-        expenseDateError.textContent = "";
+        titleError.textContent = "";
+        dateError.textContent = "";
         amountError.textContent = "";
         categoryError.textContent = "";
-        modeOfPaymentError.textContent = "";
+        typeError.textContent = "";
 
         // Place of Expense validation
-        if (placeOfExpense.length < 5) {
-          placeOfExpenseError.textContent =
+        if (title.length < 5) {
+          titleError.textContent =
             "Please enter a valid place of expense (at least 5 characters)";
           isValid = false;
         }
 
         // Expense Date validation
         const today = new Date();
-        const selectedDate = new Date(expenseDate);
+        const selectedDate = new Date(date);
         if (selectedDate > today) {
-          expenseDateError.textContent = "Expense date cannot be in the future";
+          dateError.textContent = "Expense date cannot be in the future";
           isValid = false;
         }
 
@@ -195,8 +195,8 @@
         }
 
         // Mode of Payment validation
-        if (modeOfPayment === "") {
-          modeOfPaymentError.textContent = "Please select a mode of payment";
+        if (type === "") {
+          typeError.textContent = "Please select a mode of payment";
           isValid = false;
         }
 
@@ -207,15 +207,15 @@
 
       function makeRequest() {
         const formData = {
-          placeOfExpense: document.getElementById("placeOfExpense").value,
-          expenseDate: document.getElementById("expenseDate").value,
+          title: document.getElementById("title").value,
+          date: document.getElementById("date").value,
           amount: parseFloat(document.getElementById("amount").value),
           category: Array.from(
             document.querySelectorAll('input[name="category[]"]:checked')
           )
             .map((el) => el.value)
             .join(", "),
-          modeOfPayment: document.getElementById("modeOfPayment").value,
+          type: document.getElementById("type").value,
           rational: document.getElementById("rational").value,
         };
 
