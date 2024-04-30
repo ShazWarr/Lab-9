@@ -39,53 +39,81 @@
         document.getElementById("updateTime").innerText =
           "Last Updated: " + currentTime;
       }
-      function fetchFinanceData() {
-    // Calls updateFinanceTable and updateCurrentTime
 
-    
-    fetch("/finance")
-        .then((response) => {
+      function fetchFinanceData() {
+        // Calls updateFinanceTable and updateCurrentTime
+        fetch("/finance")
+          .then((response) => {
             // if the response is not valid
             if (!response.ok) {
-                throw new Error("Network response failed");
+              throw new Error("Network response failed");
             }
             // else return the json response
             return response.json();
-        })
-        // pass the returned response to the "updateFinanceTable"
-        .then((data) => {
+          })
+          // pass the returned response to the "updateFinanceTable"
+          .then((data) => {
             // Update the finance table with the received data
             updateFinanceTable(data);
             updateCurrentTime();
-        })
-        .catch((error) => {
+          })
+          .catch((error) => {
             console.error("Error occurred with fetch", error);
-        });
-}
+          });
+      }
 
-function updateFinanceTable(data) {
-    const financeDataElement = document.getElementById("financeData");
-    financeDataElement.innerHTML = ""; // Clear existing data
-    data.forEach((item) => {
-        // Create a new table row element with table data
-        const newRow = document.createElement("tr");
+      function deleteFinanceData(id) {
+        fetch(`/expenses/${id}`, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            // if the response is not valid
+            if (!response.ok) {
+              throw new Error("failed to delete entry");
+            }
+            return response.json;
+          })
+          // pass the returned response to the "updateFinanceTable"
+          .then((data) => {
+            // Update the finance table with the received data
 
-        // Populate the table
-        newRow.innerHTML = `
+            updateFinanceTable(data);
+            updateCurrentTime();
+          })
+          .catch((error) => {
+            console.error("Error occurred with delete", error);
+          });
+      }
+
+     
+
+      function updateFinanceTable(data) {
+        const financeDataElement = document.getElementById("financeData");
+        financeDataElement.innerHTML = ""; // Clear existing data
+        data.forEach((item) => {
+          // Create a new table row element with table data
+          const newRow = document.createElement("tr");
+          const btn = document.createElement("button");
+
+          // Populate the table row by row
+          newRow.innerHTML = `
             <td>${item.title}</td>
             <td>${item.category}</td>
             <td>${item.amount}</td>
             <td>${item.type}</td>
             <td>${item.date}</td>
+            <button onclick="deleteFinanceData(${item.id})" type="button"> Delete </button>
+           
+
         `;
+          //Whichever item's delete button is clicked will called deleteFinanceData with the parameter being that item's id.
+          // Append the new row to the table body
+          financeDataElement.appendChild(newRow);
+        });
+      }
 
-        // Append the new row to the table body
-        financeDataElement.appendChild(newRow);
-    });
-}
-
-// Run it
-setInterval(fetchFinanceData, 5000);
+      // Run it
+      setInterval(fetchFinanceData, 5000);
     </script>
     <!--End of Script-->
   </body>
