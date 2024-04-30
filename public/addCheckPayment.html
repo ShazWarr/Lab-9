@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Check Payment</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="../public/index.html"
+          >Home</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarText"
+          aria-controls="navbarText"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="../public/addExpense.html"
+          >Add Expenses</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarText"
+          aria-controls="navbarText"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <style>
+      .error {
+        color: red;
+      }
+    </style>
+    <main class="container">
+      <h1>Add Check Payment</h1>
+      <form id="checkPaymentForm" action="" method="post">
+        <!--Name of the check-->
+        <label for="checkName" class="form-label">Name of the Check *</label
+        ><br />
+        <input
+          type="text"
+          class="form-control form-control-lg"
+          id="checkName"
+          name="checkName"
+          placeholder="Must enter at least 5 characters"
+          aria-label=".form-control-lg example"
+          required
+          minlength="5"
+        />
+        <span class="error" id="checkNameError"></span><br /><br />
+
+        <!--Date-->
+        <label for="checkDate" class="form-label">Date (in the future) *</label
+        ><br />
+        <input
+          type="date"
+          class="form-control form-control-lg"
+          id="checkDate"
+          name="checkDate"
+          aria-label=".form-control-lg example"
+          required
+          min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>"
+          <!--Min
+          date
+          is
+          tomorrow--
+        />
+        />
+        <span class="error" id="checkDateError"></span><br /><br />
+
+        <!--Amount-->
+        <label for="checkAmount" class="form-label">Amount *</label><br />
+        <input
+          type="number"
+          class="form-control form-control-lg"
+          id="checkAmount"
+          name="checkAmount"
+          step="0.01"
+          placeholder="Enter amount"
+          aria-label=".form-control-lg example"
+          required
+          min="0.01"
+        />
+        <span class="error" id="checkAmountError"></span><br /><br />
+
+        <!--Bank-->
+        <label for="bankName" class="form-label"
+          >Bank from where it is issued *</label
+        ><br />
+        <input
+          type="text"
+          class="form-control form-control-lg"
+          id="bankName"
+          name="bankName"
+          placeholder="Must enter at least 5 characters"
+          aria-label=".form-control-lg example"
+          required
+          minlength="5"
+        />
+        <span class="error" id="bankNameError"></span><br /><br />
+
+        <!--Account Number-->
+        <label for="accountNumber" class="form-label">Account Number *</label
+        ><br />
+        <input
+          type="text"
+          class="form-control form-control-lg"
+          id="accountNumber"
+          name="accountNumber"
+          placeholder="Enter 10-digit account number"
+          aria-label=".form-control-lg example"
+          required
+          pattern="[0-9]{10}"
+          title="Please enter a 10-digit account number"
+        />
+        <span class="error" id="accountNumberError"></span><br /><br />
+
+        <!--Submit-->
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit">Submit form</button>
+        </div>
+      </form>
+    </main>
+
+    <script>
+      document
+        .getElementById("checkPaymentForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); //prevent the default form submission
+          validateCheckPayment(); //call the validateCheckPayment function
+        });
+
+      function validateCheckPayment() {
+        let isValid = true;
+
+        // Get input values
+        const checkName = document.getElementById("checkName").value;
+        const checkDate = document.getElementById("checkDate").value;
+        const checkAmount = parseFloat(
+          document.getElementById("checkAmount").value
+        );
+        const bankName = document.getElementById("bankName").value;
+        const accountNumber = document.getElementById("accountNumber").value;
+
+        // Get error elements
+        const checkNameError = document.getElementById("checkNameError");
+        const checkDateError = document.getElementById("checkDateError");
+        const checkAmountError = document.getElementById("checkAmountError");
+        const bankNameError = document.getElementById("bankNameError");
+        const accountNumberError =
+          document.getElementById("accountNumberError");
+
+        // Reset error messages
+        checkNameError.textContent = "";
+        checkDateError.textContent = "";
+        checkAmountError.textContent = "";
+        bankNameError.textContent = "";
+        accountNumberError.textContent = "";
+
+        // Check Name validation
+        if (checkName.length < 5) {
+          checkNameError.textContent =
+            "Please enter a valid name of the check (at least 5 characters)";
+          isValid = false;
+        }
+
+        // Check Date validation
+        const today = new Date();
+        const selectedDate = new Date(checkDate);
+        if (selectedDate <= today) {
+          checkDateError.textContent = "Please enter a date in the future";
+          isValid = false;
+        }
+
+        // Check Amount validation
+        if (checkAmount <= 0 || isNaN(checkAmount)) {
+          checkAmountError.textContent =
+            "Please enter a valid amount (greater than 0)";
+          isValid = false;
+        }
+
+        // Bank Name validation
+        if (bankName.length < 5) {
+          bankNameError.textContent =
+            "Please enter a valid bank name (at least 5 characters)";
+          isValid = false;
+        }
+
+        // Account Number validation
+        if (!/^\d{10}$/.test(accountNumber)) {
+          accountNumberError.textContent =
+            "Please enter a valid 10-digit account number";
+          isValid = false;
+        }
+
+        if (isValid) {
+          console.log("Form submitted successfully!");
+        }
+      }
+    </script>
+  </body>
+</html>

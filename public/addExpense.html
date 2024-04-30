@@ -10,6 +10,42 @@
     />
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="../public/index.html"
+          >Home</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarText"
+          aria-controls="navbarText"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="../public/addCheckPayment.html"
+          >Add Check Payment</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarText"
+          aria-controls="navbarText"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+         
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
+
     <style>
       .error {
         color: red;
@@ -19,8 +55,7 @@
       <h1>Add Expenses</h1>
       <form id="financeForm" action="/finance" method="post">
         <!--title-->
-        <label for="title" class="form-label">Place of Expense *</label
-        ><br />
+        <label for="title" class="form-label">Place of Expense *</label><br />
         <input
           type="text"
           class="form-control form-control-lg"
@@ -34,8 +69,7 @@
         <span class="error" id="titleError"></span><br /><br />
 
         <!--DATE OF EXPENSE-->
-        <label for="date" class="form-label">Date Of Expense *</label
-        ><br />
+        <label for="date" class="form-label">Date Of Expense *</label><br />
         <input
           type="date"
           class="form-control form-control-lg"
@@ -91,8 +125,7 @@
         <span class="error" id="categoryError"></span><br /><br />
 
         <!--Type-->
-        <label for="type" class="form-label">Mode of Payment *</label
-        ><br />
+        <label for="type" class="form-label">Mode of Payment *</label><br />
         <select
           class="form-select form-select-lg mb-3"
           aria-label="Large select example"
@@ -150,14 +183,11 @@
         const rational = document.getElementById("rational").value;
 
         // Get error elements
-        const titleError = document.getElementById(
-          "titleError"
-        );
+        const titleError = document.getElementById("titleError");
         const dateError = document.getElementById("dateError");
         const amountError = document.getElementById("amountError");
         const categoryError = document.getElementById("categoryError");
-        const typeError =
-          document.getElementById("typeError");
+        const typeError = document.getElementById("typeError");
 
         // Reset error messages
         titleError.textContent = "";
